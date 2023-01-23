@@ -22,7 +22,12 @@ def blog_single(request,pid):
     return render(request,'blog/blog-single.html',context)
 
 def test(request):
+   # posts=Post.objects.all()
+    #context={'name':name}
+    return render(request,'test.html')    
 
-    posts=Post.objects.all()
+def blog_category(request,cat_name):
+    posts=Post.objects.filter(status=1)
+    posts=posts.filter(category__name=cat_name)
     context={'posts':posts}
-    return render(request,'test.html',context)    
+    return render(request,'blog/blog-home.html',context)
