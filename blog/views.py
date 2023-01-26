@@ -5,8 +5,10 @@ from django.db.models import Max, Min
 
 
 
-def blog_view(request):
+def blog_view(request,cat_name=None):
     posts= Post.objects.filter(status=1,published_date__lte=timezone.now())
+    if cat_name:
+        posts=posts.filter(category__name=cat_name)
 
     #posts=Post.objects.filter(status=1)
     #posts=Post.objects.filter
