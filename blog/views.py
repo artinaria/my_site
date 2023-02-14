@@ -5,10 +5,14 @@ from django.db.models import Max, Min
 
 
 
-def blog_view(request,cat_name=None):
+def blog_view(request,**kwargs):
     posts= Post.objects.filter(status=1,published_date__lte=timezone.now())
-    if cat_name:
-        posts=posts.filter(category__name=cat_name)
+    if kwargs.get('cat_name'):
+        posts=Post.objects.filter(category__name=kwargs['cat_name'])
+    if kwargs.get('author_username'):
+        posts=Post.objects.filter(author__username=kwargs['author_username'])
+    
+    
 
     #posts=Post.objects.filter(status=1)
     #posts=Post.objects.filter
@@ -62,5 +66,14 @@ def test(request):
 def blog_category(request,cat_name):
     posts=Post.objects.filter(status=1)
     posts=posts.filter(category__name=cat_name)
+    context={'posts':posts}
+    return render(request,'blog/blog-home.html',context)
+
+def blog_search(request):
+    posts= Post.objects.filter(status=1)
+    if request.method=='GET':
+        if s:=request.GET.get('s'):
+            posts=posts.filter(content__contains=s)
+
     context={'posts':posts}
     return render(request,'blog/blog-home.html',context)

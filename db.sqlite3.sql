@@ -10,25 +10,25 @@ CREATE TABLE IF NOT EXISTS "auth_group_permissions" (
 	"id"	integer NOT NULL,
 	"group_id"	integer NOT NULL,
 	"permission_id"	integer NOT NULL,
+	PRIMARY KEY("id" AUTOINCREMENT),
 	FOREIGN KEY("group_id") REFERENCES "auth_group"("id") DEFERRABLE INITIALLY DEFERRED,
-	FOREIGN KEY("permission_id") REFERENCES "auth_permission"("id") DEFERRABLE INITIALLY DEFERRED,
-	PRIMARY KEY("id" AUTOINCREMENT)
+	FOREIGN KEY("permission_id") REFERENCES "auth_permission"("id") DEFERRABLE INITIALLY DEFERRED
 );
 CREATE TABLE IF NOT EXISTS "auth_user_groups" (
 	"id"	integer NOT NULL,
 	"user_id"	integer NOT NULL,
 	"group_id"	integer NOT NULL,
+	PRIMARY KEY("id" AUTOINCREMENT),
 	FOREIGN KEY("group_id") REFERENCES "auth_group"("id") DEFERRABLE INITIALLY DEFERRED,
-	FOREIGN KEY("user_id") REFERENCES "auth_user"("id") DEFERRABLE INITIALLY DEFERRED,
-	PRIMARY KEY("id" AUTOINCREMENT)
+	FOREIGN KEY("user_id") REFERENCES "auth_user"("id") DEFERRABLE INITIALLY DEFERRED
 );
 CREATE TABLE IF NOT EXISTS "auth_user_user_permissions" (
 	"id"	integer NOT NULL,
 	"user_id"	integer NOT NULL,
 	"permission_id"	integer NOT NULL,
+	PRIMARY KEY("id" AUTOINCREMENT),
 	FOREIGN KEY("user_id") REFERENCES "auth_user"("id") DEFERRABLE INITIALLY DEFERRED,
-	FOREIGN KEY("permission_id") REFERENCES "auth_permission"("id") DEFERRABLE INITIALLY DEFERRED,
-	PRIMARY KEY("id" AUTOINCREMENT)
+	FOREIGN KEY("permission_id") REFERENCES "auth_permission"("id") DEFERRABLE INITIALLY DEFERRED
 );
 CREATE TABLE IF NOT EXISTS "django_admin_log" (
 	"id"	integer NOT NULL,
@@ -39,9 +39,9 @@ CREATE TABLE IF NOT EXISTS "django_admin_log" (
 	"content_type_id"	integer,
 	"user_id"	integer NOT NULL,
 	"action_flag"	smallint unsigned NOT NULL CHECK("action_flag" >= 0),
-	FOREIGN KEY("content_type_id") REFERENCES "django_content_type"("id") DEFERRABLE INITIALLY DEFERRED,
+	PRIMARY KEY("id" AUTOINCREMENT),
 	FOREIGN KEY("user_id") REFERENCES "auth_user"("id") DEFERRABLE INITIALLY DEFERRED,
-	PRIMARY KEY("id" AUTOINCREMENT)
+	FOREIGN KEY("content_type_id") REFERENCES "django_content_type"("id") DEFERRABLE INITIALLY DEFERRED
 );
 CREATE TABLE IF NOT EXISTS "django_content_type" (
 	"id"	integer NOT NULL,
@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS "auth_permission" (
 	"content_type_id"	integer NOT NULL,
 	"codename"	varchar(100) NOT NULL,
 	"name"	varchar(255) NOT NULL,
-	FOREIGN KEY("content_type_id") REFERENCES "django_content_type"("id") DEFERRABLE INITIALLY DEFERRED,
-	PRIMARY KEY("id" AUTOINCREMENT)
+	PRIMARY KEY("id" AUTOINCREMENT),
+	FOREIGN KEY("content_type_id") REFERENCES "django_content_type"("id") DEFERRABLE INITIALLY DEFERRED
 );
 CREATE TABLE IF NOT EXISTS "auth_group" (
 	"id"	integer NOT NULL,
@@ -103,8 +103,21 @@ CREATE TABLE IF NOT EXISTS "blog_post" (
 	"created_date"	datetime NOT NULL,
 	"author_id"	integer,
 	"image"	varchar(100) NOT NULL,
-	FOREIGN KEY("author_id") REFERENCES "auth_user"("id") DEFERRABLE INITIALLY DEFERRED,
+	PRIMARY KEY("id" AUTOINCREMENT),
+	FOREIGN KEY("author_id") REFERENCES "auth_user"("id") DEFERRABLE INITIALLY DEFERRED
+);
+CREATE TABLE IF NOT EXISTS "blog_category" (
+	"id"	integer NOT NULL,
+	"name"	varchar(300) NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "blog_post_category" (
+	"id"	integer NOT NULL,
+	"post_id"	bigint NOT NULL,
+	"category_id"	bigint NOT NULL,
+	PRIMARY KEY("id" AUTOINCREMENT),
+	FOREIGN KEY("post_id") REFERENCES "blog_post"("id") DEFERRABLE INITIALLY DEFERRED,
+	FOREIGN KEY("category_id") REFERENCES "blog_category"("id") DEFERRABLE INITIALLY DEFERRED
 );
 INSERT INTO "django_migrations" VALUES (1,'contenttypes','0001_initial','2023-01-14 12:38:40.066147');
 INSERT INTO "django_migrations" VALUES (2,'auth','0001_initial','2023-01-14 12:38:40.082141');
@@ -134,6 +147,8 @@ INSERT INTO "django_migrations" VALUES (25,'website','0002_contact_email','2023-
 INSERT INTO "django_migrations" VALUES (26,'blog','0006_auto_20230116_1446','2023-01-16 11:16:56.918729');
 INSERT INTO "django_migrations" VALUES (27,'website','0003_alter_contact_options','2023-01-16 11:16:56.925233');
 INSERT INTO "django_migrations" VALUES (28,'blog','0007_post_image','2023-01-16 12:43:39.609519');
+INSERT INTO "django_migrations" VALUES (29,'blog','0008_alter_post_options','2023-01-17 09:04:14.475664');
+INSERT INTO "django_migrations" VALUES (30,'blog','0009_auto_20230117_1240','2023-01-17 09:10:44.161049');
 INSERT INTO "django_admin_log" VALUES (1,'2023-01-14 13:18:12.376784','1','admin','[{"changed": {"fields": ["First name", "Last name", "Email address"]}}]',4,1,2);
 INSERT INTO "django_admin_log" VALUES (2,'2023-01-15 07:55:32.429051','1','Post object (1)','[{"added": {}}]',7,1,1);
 INSERT INTO "django_admin_log" VALUES (3,'2023-01-15 07:56:08.901715','2','Post object (2)','[{"added": {}}]',7,1,1);
@@ -154,6 +169,21 @@ INSERT INTO "django_admin_log" VALUES (17,'2023-01-16 20:25:53.520455','5','bada
 INSERT INTO "django_admin_log" VALUES (18,'2023-01-16 20:26:18.008470','3','title_test-3','[{"changed": {"fields": ["Published date"]}}]',7,1,2);
 INSERT INTO "django_admin_log" VALUES (19,'2023-01-16 20:26:38.691625','4','oipoipip-4','[{"changed": {"fields": ["Image"]}}]',7,1,2);
 INSERT INTO "django_admin_log" VALUES (20,'2023-01-16 20:28:15.903930','2','title_2-2','[{"changed": {"fields": ["Image", "Published date"]}}]',7,1,2);
+INSERT INTO "django_admin_log" VALUES (21,'2023-01-17 09:18:35.648685','1','Category object (1)','[{"added": {}}]',9,1,1);
+INSERT INTO "django_admin_log" VALUES (22,'2023-01-17 09:18:42.881945','2','Category object (2)','[{"added": {}}]',9,1,1);
+INSERT INTO "django_admin_log" VALUES (23,'2023-01-17 09:19:43.246409','3','Category object (3)','[{"added": {}}]',9,1,1);
+INSERT INTO "django_admin_log" VALUES (24,'2023-01-17 09:28:31.672484','1','title_1-1','[{"changed": {"fields": ["Category"]}}]',7,1,2);
+INSERT INTO "django_admin_log" VALUES (25,'2023-01-17 09:29:41.596167','4','oipoipip-4','[{"changed": {"fields": ["Category"]}}]',7,1,2);
+INSERT INTO "django_admin_log" VALUES (26,'2023-01-17 13:45:06.591439','4','oipoipip-4','[{"changed": {"fields": ["Content"]}}]',7,1,2);
+INSERT INTO "django_admin_log" VALUES (27,'2023-01-17 13:45:34.798317','4','oipoipip-4','[{"changed": {"fields": ["Content"]}}]',7,1,2);
+INSERT INTO "django_admin_log" VALUES (28,'2023-01-17 13:45:56.986346','2','title_2-2','[{"changed": {"fields": ["Category", "Content"]}}]',7,1,2);
+INSERT INTO "django_admin_log" VALUES (29,'2023-01-17 13:46:24.937721','3','title_test-3','[{"changed": {"fields": ["Category", "Content"]}}]',7,1,2);
+INSERT INTO "django_admin_log" VALUES (30,'2023-01-17 13:46:53.540016','4','Tech','[{"added": {}}]',9,1,1);
+INSERT INTO "django_admin_log" VALUES (31,'2023-01-17 13:47:00.719875','5','badan-5','[{"changed": {"fields": ["Category", "Content"]}}]',7,1,2);
+INSERT INTO "django_admin_log" VALUES (32,'2023-01-17 13:47:33.477841','1','title_1-1','[{"changed": {"fields": ["Content"]}}]',7,1,2);
+INSERT INTO "django_admin_log" VALUES (33,'2023-01-17 13:50:44.093395','4','oipoipip-4','[{"changed": {"fields": ["Image"]}}]',7,1,2);
+INSERT INTO "django_admin_log" VALUES (34,'2023-01-20 10:54:05.132881','1','title_1-1','[{"changed": {"fields": ["Status"]}}]',7,1,2);
+INSERT INTO "django_admin_log" VALUES (35,'2023-01-23 16:50:56.217835','2','title_2-2','',7,1,3);
 INSERT INTO "django_content_type" VALUES (1,'admin','logentry');
 INSERT INTO "django_content_type" VALUES (2,'auth','permission');
 INSERT INTO "django_content_type" VALUES (3,'auth','group');
@@ -162,6 +192,7 @@ INSERT INTO "django_content_type" VALUES (5,'contenttypes','contenttype');
 INSERT INTO "django_content_type" VALUES (6,'sessions','session');
 INSERT INTO "django_content_type" VALUES (7,'blog','post');
 INSERT INTO "django_content_type" VALUES (8,'website','contact');
+INSERT INTO "django_content_type" VALUES (9,'blog','category');
 INSERT INTO "auth_permission" VALUES (1,1,'add_logentry','Can add log entry');
 INSERT INTO "auth_permission" VALUES (2,1,'change_logentry','Can change log entry');
 INSERT INTO "auth_permission" VALUES (3,1,'delete_logentry','Can delete log entry');
@@ -194,16 +225,31 @@ INSERT INTO "auth_permission" VALUES (29,8,'add_contact','Can add contact');
 INSERT INTO "auth_permission" VALUES (30,8,'change_contact','Can change contact');
 INSERT INTO "auth_permission" VALUES (31,8,'delete_contact','Can delete contact');
 INSERT INTO "auth_permission" VALUES (32,8,'view_contact','Can view contact');
+INSERT INTO "auth_permission" VALUES (33,9,'add_category','Can add category');
+INSERT INTO "auth_permission" VALUES (34,9,'change_category','Can change category');
+INSERT INTO "auth_permission" VALUES (35,9,'delete_category','Can delete category');
+INSERT INTO "auth_permission" VALUES (36,9,'view_category','Can view category');
 INSERT INTO "auth_user" VALUES (1,'pbkdf2_sha256$260000$8XCe4a4Rw6QLSJvftLbvGH$upY4e9TgCJ2MRyNxurnuQK8OfqClnCUyFhTBZrOb2ps=','2023-01-14 13:02:53',1,'admin','taherpour','saharimat@gmail.com',1,1,'2023-01-14 12:59:37','sahar');
 INSERT INTO "auth_user" VALUES (2,'pbkdf2_sha256$260000$miZODDw3C6vwooRSo751fQ$8Q+OxAqN6OtHlLOzMZP733R1utdZB3jUsvOuif17eU4=',NULL,0,'Artin','Khodabandeh','Art@yahoo.com',0,1,'2023-01-16 11:24:02','Artin');
 INSERT INTO "django_session" VALUES ('2rmm26m17dj5lfxmdhqk6pcrgh5b1yme','.eJxVjMsOgjAQRf-la9NQB1rGpXu-gXQeFdS0CYWV8d-VhIVu7znnvswYt3Uat6rLOIu5GGdOvxtFfmjegdxjvhXLJa_LTHZX7EGrHYro83q4fwdTrNO3ZkoJO4_aOvEEEJMwQgdOeg7EnaoDZeSEAUh69Q2qNMyEbZ98OJv3BxSLORI:1pGgBR:-Byeolh9QeU5CCzeB38DqJ4dhyOpLuAi4FqA3uqjFo0','2023-01-28 13:02:53.262209');
 INSERT INTO "website_contact" VALUES (1,'sa','Company new programmer','interested in programming and  web designing','2023-01-15 12:15:35.523598','2023-01-15 12:15:35.523598','sada@gmail.com');
 INSERT INTO "website_contact" VALUES (2,'maryam','mam','saate kare company shoma??','2023-01-15 12:19:28.150688','2023-01-15 12:19:28.150688','esfahani@yahoo.com');
-INSERT INTO "blog_post" VALUES (1,'title_1','content_1',6,1,'2023-01-15 07:55:29','2023-01-16 20:38:11.359809','2023-01-15 07:55:32.429051',1,'blog/default.jpg');
-INSERT INTO "blog_post" VALUES (2,'title_2','content_2',0,1,'2023-01-16 07:56:02','2023-01-16 20:28:15.903930','2023-01-15 07:56:08.901715',2,'blog/cat-widget3.jpg');
-INSERT INTO "blog_post" VALUES (3,'title_test','contm,nmlmjlfd,gffmdmg',7,1,'2023-01-24 08:54:59','2023-01-16 20:26:18.008470','2023-01-13 08:55:12.254894',2,'blog/default.jpg');
-INSERT INTO "blog_post" VALUES (4,'oipoipip','m,nnn,mnnm,n',2,1,'2023-01-16 13:11:22','2023-01-16 20:37:50.195141','2023-01-16 13:11:26.969626',1,'blog/pp4.jpg');
-INSERT INTO "blog_post" VALUES (5,'badan','inooo badan neshon bede',0,1,'2023-01-20 19:09:37','2023-01-16 20:25:53.520455','2023-01-16 19:09:48.300245',1,'blog/b1.jpg');
+INSERT INTO "blog_post" VALUES (1,'title_1','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Egestas purus viverra accumsan in nisl nisi. Arcu cursus vitae congue mauris rhoncus aenean vel elit scelerisque. In egestas erat imperdiet sed euismod nisi porta lorem mollis. Morbi tristique senectus et netus. Mattis pellentesque id nibh tortor id aliquet lectus proin. Sapien faucibus et molestie ac feugiat sed lectus vestibulum. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Dictum varius duis at consectetur lorem. Nisi vitae suscipit tellus mauris a diam maecenas sed enim. Velit ut tortor pretium viverra suspendisse potenti nullam. Et molestie ac feugiat sed lectus. Non nisi est sit amet facilisis magna. Dignissim diam quis enim lobortis scelerisque fermentum. Odio ut enim blandit volutpat maecenas volutpat. Ornare lectus sit amet est placerat in egestas erat. Nisi vitae suscipit tellus mauris a diam maecenas sed. Placerat duis ultricies lacus sed turpis tincidunt id aliquet.',13,1,'2023-01-15 07:55:29','2023-01-23 18:26:00.752318','2023-01-15 07:55:32.429051',1,'blog/default.jpg');
+INSERT INTO "blog_post" VALUES (3,'title_test','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Egestas purus viverra accumsan in nisl nisi. Arcu cursus vitae congue mauris rhoncus aenean vel elit scelerisque. In egestas erat imperdiet sed euismod nisi porta lorem mollis. Morbi tristique senectus et netus. Mattis pellentesque id nibh tortor id aliquet lectus proin. Sapien faucibus et molestie ac feugiat sed lectus vestibulum. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Dictum varius duis at consectetur lorem. Nisi vitae suscipit tellus mauris a diam maecenas sed enim. Velit ut tortor pretium viverra suspendisse potenti nullam. Et molestie ac feugiat sed lectus. Non nisi est sit amet facilisis magna. Dignissim diam quis enim lobortis scelerisque fermentum. Odio ut enim blandit volutpat maecenas volutpat. Ornare lectus sit amet est placerat in egestas erat. Nisi vitae suscipit tellus mauris a diam maecenas sed. Placerat duis ultricies lacus sed turpis tincidunt id aliquet.',24,1,'2023-01-24 08:54:59','2023-01-23 18:38:28.668160','2023-01-13 08:55:12.254894',2,'blog/default.jpg');
+INSERT INTO "blog_post" VALUES (4,'oipoipip','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Egestas purus viverra accumsan in nisl nisi. Arcu cursus vitae congue mauris rhoncus aenean vel elit scelerisque. In egestas erat imperdiet sed euismod nisi porta lorem mollis. Morbi tristique senectus et netus. Mattis pellentesque id nibh tortor id aliquet lectus proin. Sapien faucibus et molestie ac feugiat sed lectus vestibulum. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Dictum varius duis at consectetur lorem. Nisi vitae suscipit tellus mauris a diam maecenas sed enim. Velit ut tortor pretium viverra suspendisse potenti nullam. Et molestie ac feugiat sed lectus. Non nisi est sit amet facilisis magna. Dignissim diam quis enim lobortis scelerisque fermentum. Odio ut enim blandit volutpat maecenas volutpat. Ornare lectus sit amet est placerat in egestas erat. Nisi vitae suscipit tellus mauris a diam maecenas sed. Placerat duis ultricies lacus sed turpis tincidunt id aliquet.',117,1,'2023-01-16 13:11:22','2023-01-23 18:41:53.939437','2023-01-16 13:11:26.969626',1,'blog/feature-img1_qO41Ywi.jpg');
+INSERT INTO "blog_post" VALUES (5,'badan','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Egestas purus viverra accumsan in nisl nisi. Arcu cursus vitae congue mauris rhoncus aenean vel elit scelerisque. In egestas erat imperdiet sed euismod nisi porta lorem mollis. Morbi tristique senectus et netus. Mattis pellentesque id nibh tortor id aliquet lectus proin. Sapien faucibus et molestie ac feugiat sed lectus vestibulum. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Dictum varius duis at consectetur lorem. Nisi vitae suscipit tellus mauris a diam maecenas sed enim. Velit ut tortor pretium viverra suspendisse potenti nullam. Et molestie ac feugiat sed lectus. Non nisi est sit amet facilisis magna. Dignissim diam quis enim lobortis scelerisque fermentum. Odio ut enim blandit volutpat maecenas volutpat. Ornare lectus sit amet est placerat in egestas erat. Nisi vitae suscipit tellus mauris a diam maecenas sed. Placerat duis ultricies lacus sed turpis tincidunt id aliquet.',30,1,'2023-01-20 19:09:37','2023-01-23 18:42:03.733589','2023-01-16 19:09:48.300245',1,'blog/b1.jpg');
+INSERT INTO "blog_category" VALUES (1,'art');
+INSERT INTO "blog_category" VALUES (2,'it');
+INSERT INTO "blog_category" VALUES (3,'programming');
+INSERT INTO "blog_category" VALUES (4,'Tech');
+INSERT INTO "blog_post_category" VALUES (1,1,1);
+INSERT INTO "blog_post_category" VALUES (2,1,2);
+INSERT INTO "blog_post_category" VALUES (3,4,1);
+INSERT INTO "blog_post_category" VALUES (4,4,3);
+INSERT INTO "blog_post_category" VALUES (6,3,1);
+INSERT INTO "blog_post_category" VALUES (7,3,2);
+INSERT INTO "blog_post_category" VALUES (8,5,3);
+INSERT INTO "blog_post_category" VALUES (9,5,4);
 CREATE UNIQUE INDEX IF NOT EXISTS "auth_group_permissions_group_id_permission_id_0cd325b0_uniq" ON "auth_group_permissions" (
 	"group_id",
 	"permission_id"
@@ -256,5 +302,15 @@ CREATE INDEX IF NOT EXISTS "django_session_expire_date_a5c62663" ON "django_sess
 );
 CREATE INDEX IF NOT EXISTS "blog_post_author_id_dd7a8485" ON "blog_post" (
 	"author_id"
+);
+CREATE UNIQUE INDEX IF NOT EXISTS "blog_post_category_post_id_category_id_189979f4_uniq" ON "blog_post_category" (
+	"post_id",
+	"category_id"
+);
+CREATE INDEX IF NOT EXISTS "blog_post_category_post_id_d7c84b08" ON "blog_post_category" (
+	"post_id"
+);
+CREATE INDEX IF NOT EXISTS "blog_post_category_category_id_e1f613f9" ON "blog_post_category" (
+	"category_id"
 );
 COMMIT;
