@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS "auth_group_permissions" (
 	"group_id"	integer NOT NULL,
 	"permission_id"	integer NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT),
-	FOREIGN KEY("group_id") REFERENCES "auth_group"("id") DEFERRABLE INITIALLY DEFERRED,
-	FOREIGN KEY("permission_id") REFERENCES "auth_permission"("id") DEFERRABLE INITIALLY DEFERRED
+	FOREIGN KEY("permission_id") REFERENCES "auth_permission"("id") DEFERRABLE INITIALLY DEFERRED,
+	FOREIGN KEY("group_id") REFERENCES "auth_group"("id") DEFERRABLE INITIALLY DEFERRED
 );
 CREATE TABLE IF NOT EXISTS "auth_user_groups" (
 	"id"	integer NOT NULL,
@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS "auth_user_user_permissions" (
 	"user_id"	integer NOT NULL,
 	"permission_id"	integer NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT),
-	FOREIGN KEY("user_id") REFERENCES "auth_user"("id") DEFERRABLE INITIALLY DEFERRED,
-	FOREIGN KEY("permission_id") REFERENCES "auth_permission"("id") DEFERRABLE INITIALLY DEFERRED
+	FOREIGN KEY("permission_id") REFERENCES "auth_permission"("id") DEFERRABLE INITIALLY DEFERRED,
+	FOREIGN KEY("user_id") REFERENCES "auth_user"("id") DEFERRABLE INITIALLY DEFERRED
 );
 CREATE TABLE IF NOT EXISTS "django_admin_log" (
 	"id"	integer NOT NULL,
@@ -40,8 +40,8 @@ CREATE TABLE IF NOT EXISTS "django_admin_log" (
 	"user_id"	integer NOT NULL,
 	"action_flag"	smallint unsigned NOT NULL CHECK("action_flag" >= 0),
 	PRIMARY KEY("id" AUTOINCREMENT),
-	FOREIGN KEY("user_id") REFERENCES "auth_user"("id") DEFERRABLE INITIALLY DEFERRED,
-	FOREIGN KEY("content_type_id") REFERENCES "django_content_type"("id") DEFERRABLE INITIALLY DEFERRED
+	FOREIGN KEY("content_type_id") REFERENCES "django_content_type"("id") DEFERRABLE INITIALLY DEFERRED,
+	FOREIGN KEY("user_id") REFERENCES "auth_user"("id") DEFERRABLE INITIALLY DEFERRED
 );
 CREATE TABLE IF NOT EXISTS "django_content_type" (
 	"id"	integer NOT NULL,
@@ -116,8 +116,8 @@ CREATE TABLE IF NOT EXISTS "blog_post_category" (
 	"post_id"	bigint NOT NULL,
 	"category_id"	bigint NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT),
-	FOREIGN KEY("post_id") REFERENCES "blog_post"("id") DEFERRABLE INITIALLY DEFERRED,
-	FOREIGN KEY("category_id") REFERENCES "blog_category"("id") DEFERRABLE INITIALLY DEFERRED
+	FOREIGN KEY("category_id") REFERENCES "blog_category"("id") DEFERRABLE INITIALLY DEFERRED,
+	FOREIGN KEY("post_id") REFERENCES "blog_post"("id") DEFERRABLE INITIALLY DEFERRED
 );
 INSERT INTO "django_migrations" VALUES (1,'contenttypes','0001_initial','2023-01-14 12:38:40.066147');
 INSERT INTO "django_migrations" VALUES (2,'auth','0001_initial','2023-01-14 12:38:40.082141');
@@ -184,6 +184,11 @@ INSERT INTO "django_admin_log" VALUES (32,'2023-01-17 13:47:33.477841','1','titl
 INSERT INTO "django_admin_log" VALUES (33,'2023-01-17 13:50:44.093395','4','oipoipip-4','[{"changed": {"fields": ["Image"]}}]',7,1,2);
 INSERT INTO "django_admin_log" VALUES (34,'2023-01-20 10:54:05.132881','1','title_1-1','[{"changed": {"fields": ["Status"]}}]',7,1,2);
 INSERT INTO "django_admin_log" VALUES (35,'2023-01-23 16:50:56.217835','2','title_2-2','',7,1,3);
+INSERT INTO "django_admin_log" VALUES (36,'2023-01-27 15:52:41.524292','6','Artin2-6','[{"added": {}}]',7,1,1);
+INSERT INTO "django_admin_log" VALUES (37,'2023-02-28 17:17:51.203339','6','Artin2-6','[{"changed": {"fields": ["Content"]}}]',7,1,2);
+INSERT INTO "django_admin_log" VALUES (38,'2023-02-28 17:19:06.760198','4','oipoipip-4','[{"changed": {"fields": ["Content"]}}]',7,1,2);
+INSERT INTO "django_admin_log" VALUES (39,'2023-02-28 17:20:35.876505','1','title_1-1','[{"changed": {"fields": ["Content"]}}]',7,1,2);
+INSERT INTO "django_admin_log" VALUES (40,'2023-02-28 17:28:33.184214','1','title_1-1','[{"changed": {"fields": ["Image"]}}]',7,1,2);
 INSERT INTO "django_content_type" VALUES (1,'admin','logentry');
 INSERT INTO "django_content_type" VALUES (2,'auth','permission');
 INSERT INTO "django_content_type" VALUES (3,'auth','group');
@@ -229,15 +234,19 @@ INSERT INTO "auth_permission" VALUES (33,9,'add_category','Can add category');
 INSERT INTO "auth_permission" VALUES (34,9,'change_category','Can change category');
 INSERT INTO "auth_permission" VALUES (35,9,'delete_category','Can delete category');
 INSERT INTO "auth_permission" VALUES (36,9,'view_category','Can view category');
-INSERT INTO "auth_user" VALUES (1,'pbkdf2_sha256$260000$8XCe4a4Rw6QLSJvftLbvGH$upY4e9TgCJ2MRyNxurnuQK8OfqClnCUyFhTBZrOb2ps=','2023-01-14 13:02:53',1,'admin','taherpour','saharimat@gmail.com',1,1,'2023-01-14 12:59:37','sahar');
+INSERT INTO "auth_user" VALUES (1,'pbkdf2_sha256$260000$8XCe4a4Rw6QLSJvftLbvGH$upY4e9TgCJ2MRyNxurnuQK8OfqClnCUyFhTBZrOb2ps=','2023-02-26 09:37:45.952759',1,'admin','taherpour','saharimat@gmail.com',1,1,'2023-01-14 12:59:37','sahar');
 INSERT INTO "auth_user" VALUES (2,'pbkdf2_sha256$260000$miZODDw3C6vwooRSo751fQ$8Q+OxAqN6OtHlLOzMZP733R1utdZB3jUsvOuif17eU4=',NULL,0,'Artin','Khodabandeh','Art@yahoo.com',0,1,'2023-01-16 11:24:02','Artin');
 INSERT INTO "django_session" VALUES ('2rmm26m17dj5lfxmdhqk6pcrgh5b1yme','.eJxVjMsOgjAQRf-la9NQB1rGpXu-gXQeFdS0CYWV8d-VhIVu7znnvswYt3Uat6rLOIu5GGdOvxtFfmjegdxjvhXLJa_LTHZX7EGrHYro83q4fwdTrNO3ZkoJO4_aOvEEEJMwQgdOeg7EnaoDZeSEAUh69Q2qNMyEbZ98OJv3BxSLORI:1pGgBR:-Byeolh9QeU5CCzeB38DqJ4dhyOpLuAi4FqA3uqjFo0','2023-01-28 13:02:53.262209');
+INSERT INTO "django_session" VALUES ('wnm9ycpr98585zuz57y7etvfjsn5mqbe','.eJxVjMsOgjAQRf-la9NQB1rGpXu-gXQeFdS0CYWV8d-VhIVu7znnvswYt3Uat6rLOIu5GGdOvxtFfmjegdxjvhXLJa_LTHZX7EGrHYro83q4fwdTrNO3ZkoJO4_aOvEEEJMwQgdOeg7EnaoDZeSEAUh69Q2qNMyEbZ98OJv3BxSLORI:1pLR0u:D3-vLgfVNFZ_E5OqgxvFgf_5dqzH02KOHmV9w28RqS0','2023-02-10 15:51:40.695723');
+INSERT INTO "django_session" VALUES ('gr53rjd5m96qyecyj35pp6mu76xlqcbq','.eJxVjMsOgjAQRf-la9NQB1rGpXu-gXQeFdS0CYWV8d-VhIVu7znnvswYt3Uat6rLOIu5GGdOvxtFfmjegdxjvhXLJa_LTHZX7EGrHYro83q4fwdTrNO3ZkoJO4_aOvEEEJMwQgdOeg7EnaoDZeSEAUh69Q2qNMyEbZ98OJv3BxSLORI:1pWDTV:fFyhmU9ryQHWTstEMr0yMLEttrie7QfLPP0rMVNBjqw','2023-03-12 09:37:45.958718');
 INSERT INTO "website_contact" VALUES (1,'sa','Company new programmer','interested in programming and  web designing','2023-01-15 12:15:35.523598','2023-01-15 12:15:35.523598','sada@gmail.com');
 INSERT INTO "website_contact" VALUES (2,'maryam','mam','saate kare company shoma??','2023-01-15 12:19:28.150688','2023-01-15 12:19:28.150688','esfahani@yahoo.com');
-INSERT INTO "blog_post" VALUES (1,'title_1','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Egestas purus viverra accumsan in nisl nisi. Arcu cursus vitae congue mauris rhoncus aenean vel elit scelerisque. In egestas erat imperdiet sed euismod nisi porta lorem mollis. Morbi tristique senectus et netus. Mattis pellentesque id nibh tortor id aliquet lectus proin. Sapien faucibus et molestie ac feugiat sed lectus vestibulum. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Dictum varius duis at consectetur lorem. Nisi vitae suscipit tellus mauris a diam maecenas sed enim. Velit ut tortor pretium viverra suspendisse potenti nullam. Et molestie ac feugiat sed lectus. Non nisi est sit amet facilisis magna. Dignissim diam quis enim lobortis scelerisque fermentum. Odio ut enim blandit volutpat maecenas volutpat. Ornare lectus sit amet est placerat in egestas erat. Nisi vitae suscipit tellus mauris a diam maecenas sed. Placerat duis ultricies lacus sed turpis tincidunt id aliquet.',13,1,'2023-01-15 07:55:29','2023-01-23 18:26:00.752318','2023-01-15 07:55:32.429051',1,'blog/default.jpg');
-INSERT INTO "blog_post" VALUES (3,'title_test','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Egestas purus viverra accumsan in nisl nisi. Arcu cursus vitae congue mauris rhoncus aenean vel elit scelerisque. In egestas erat imperdiet sed euismod nisi porta lorem mollis. Morbi tristique senectus et netus. Mattis pellentesque id nibh tortor id aliquet lectus proin. Sapien faucibus et molestie ac feugiat sed lectus vestibulum. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Dictum varius duis at consectetur lorem. Nisi vitae suscipit tellus mauris a diam maecenas sed enim. Velit ut tortor pretium viverra suspendisse potenti nullam. Et molestie ac feugiat sed lectus. Non nisi est sit amet facilisis magna. Dignissim diam quis enim lobortis scelerisque fermentum. Odio ut enim blandit volutpat maecenas volutpat. Ornare lectus sit amet est placerat in egestas erat. Nisi vitae suscipit tellus mauris a diam maecenas sed. Placerat duis ultricies lacus sed turpis tincidunt id aliquet.',24,1,'2023-01-24 08:54:59','2023-01-23 18:38:28.668160','2023-01-13 08:55:12.254894',2,'blog/default.jpg');
-INSERT INTO "blog_post" VALUES (4,'oipoipip','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Egestas purus viverra accumsan in nisl nisi. Arcu cursus vitae congue mauris rhoncus aenean vel elit scelerisque. In egestas erat imperdiet sed euismod nisi porta lorem mollis. Morbi tristique senectus et netus. Mattis pellentesque id nibh tortor id aliquet lectus proin. Sapien faucibus et molestie ac feugiat sed lectus vestibulum. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Dictum varius duis at consectetur lorem. Nisi vitae suscipit tellus mauris a diam maecenas sed enim. Velit ut tortor pretium viverra suspendisse potenti nullam. Et molestie ac feugiat sed lectus. Non nisi est sit amet facilisis magna. Dignissim diam quis enim lobortis scelerisque fermentum. Odio ut enim blandit volutpat maecenas volutpat. Ornare lectus sit amet est placerat in egestas erat. Nisi vitae suscipit tellus mauris a diam maecenas sed. Placerat duis ultricies lacus sed turpis tincidunt id aliquet.',117,1,'2023-01-16 13:11:22','2023-01-23 18:41:53.939437','2023-01-16 13:11:26.969626',1,'blog/feature-img1_qO41Ywi.jpg');
-INSERT INTO "blog_post" VALUES (5,'badan','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Egestas purus viverra accumsan in nisl nisi. Arcu cursus vitae congue mauris rhoncus aenean vel elit scelerisque. In egestas erat imperdiet sed euismod nisi porta lorem mollis. Morbi tristique senectus et netus. Mattis pellentesque id nibh tortor id aliquet lectus proin. Sapien faucibus et molestie ac feugiat sed lectus vestibulum. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Dictum varius duis at consectetur lorem. Nisi vitae suscipit tellus mauris a diam maecenas sed enim. Velit ut tortor pretium viverra suspendisse potenti nullam. Et molestie ac feugiat sed lectus. Non nisi est sit amet facilisis magna. Dignissim diam quis enim lobortis scelerisque fermentum. Odio ut enim blandit volutpat maecenas volutpat. Ornare lectus sit amet est placerat in egestas erat. Nisi vitae suscipit tellus mauris a diam maecenas sed. Placerat duis ultricies lacus sed turpis tincidunt id aliquet.',30,1,'2023-01-20 19:09:37','2023-01-23 18:42:03.733589','2023-01-16 19:09:48.300245',1,'blog/b1.jpg');
+INSERT INTO "blog_post" VALUES (1,'title_1','First and foremost, so-called extreme sports are not as dangerous as many people think and there be clear regulation and safety procedures for everyone. For example, who wants to experience sky-diving should undergo training and doing it under an instructor’s supervision. Moreover, people should have enough leeway to decide how they spend their free time. It means that individuals are aware that every sport has some element of risk and they choose to experience extreme sports. Scuba diving and high wave surfing are the salient example of these kind of sport and people regardless of their danger are willing to try them.',16,1,'2023-01-15 07:55:29','2023-02-28 17:28:33.143404','2023-01-15 07:55:32.429051',1,'blog/high-angle-view-fashion-designer-s-hand-working-dress-white-background_23-2147874965.jpg');
+INSERT INTO "blog_post" VALUES (3,'title_test','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Egestas purus viverra accumsan in nisl nisi. Arcu cursus vitae congue mauris rhoncus aenean vel elit scelerisque. In egestas erat imperdiet sed euismod nisi porta lorem mollis. Morbi tristique senectus et netus. Mattis pellentesque id nibh tortor id aliquet lectus proin. Sapien faucibus et molestie ac feugiat sed lectus vestibulum. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Dictum varius duis at consectetur lorem. Nisi vitae suscipit tellus mauris a diam maecenas sed enim. Velit ut tortor pretium viverra suspendisse potenti nullam. Et molestie ac feugiat sed lectus. Non nisi est sit amet facilisis magna. Dignissim diam quis enim lobortis scelerisque fermentum. Odio ut enim blandit volutpat maecenas volutpat. Ornare lectus sit amet est placerat in egestas erat. Nisi vitae suscipit tellus mauris a diam maecenas sed. Placerat duis ultricies lacus sed turpis tincidunt id aliquet.',30,1,'2023-01-24 08:54:59','2023-02-26 09:27:09.448564','2023-01-13 08:55:12.254894',2,'blog/default.jpg');
+INSERT INTO "blog_post" VALUES (4,'oipoipip','In conclusion, sports which are not safe should not be prohibited as people have picked them consciously and they should be free to do all range of activity in their spare time.',121,1,'2023-01-16 13:11:22','2023-02-28 17:23:37.931018','2023-01-16 13:11:26.969626',1,'blog/feature-img1_qO41Ywi.jpg');
+INSERT INTO "blog_post" VALUES (5,'badan','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Egestas purus viverra accumsan in nisl nisi. Arcu cursus vitae congue mauris rhoncus aenean vel elit scelerisque. In egestas erat imperdiet sed euismod nisi porta lorem mollis. Morbi tristique senectus et netus. Mattis pellentesque id nibh tortor id aliquet lectus proin. Sapien faucibus et molestie ac feugiat sed lectus vestibulum. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Dictum varius duis at consectetur lorem. Nisi vitae suscipit tellus mauris a diam maecenas sed enim. Velit ut tortor pretium viverra suspendisse potenti nullam. Et molestie ac feugiat sed lectus. Non nisi est sit amet facilisis magna. Dignissim diam quis enim lobortis scelerisque fermentum. Odio ut enim blandit volutpat maecenas volutpat. Ornare lectus sit amet est placerat in egestas erat. Nisi vitae suscipit tellus mauris a diam maecenas sed. Placerat duis ultricies lacus sed turpis tincidunt id aliquet.',33,1,'2023-01-20 19:09:37','2023-02-28 17:26:00.170635','2023-01-16 19:09:48.300245',1,'blog/b1.jpg');
+INSERT INTO "blog_post" VALUES (6,'Artin2','In recent year, extreme sports have become increasingly popular. Some people argue that duo to its potential dangerous they should be prohibited. I strongly disagree with this statements and I strongly believe that they should not be banned.
+First and foremost, so-called extreme sports are not as dangerous as many people think and there be clear regulation and safety procedures for everyone. For example, who wants to experience sky-diving should undergo training and doing it under an instructor’s supervision. Moreover, people should have enough leeway to decide how they spend their free time. It means that individuals are aware that every sport has some element of risk and they choose to experience extreme sports. Scuba diving and high wave surfing are the salient example of these kind of sport and people regardless of their danger are willing to try them.',6,1,'2023-01-27 15:52:39','2023-02-28 17:21:23.617133','2023-01-27 15:52:41.521291',2,'blog/chair-outside_1321-460.webp');
 INSERT INTO "blog_category" VALUES (1,'art');
 INSERT INTO "blog_category" VALUES (2,'it');
 INSERT INTO "blog_category" VALUES (3,'programming');
@@ -250,6 +259,7 @@ INSERT INTO "blog_post_category" VALUES (6,3,1);
 INSERT INTO "blog_post_category" VALUES (7,3,2);
 INSERT INTO "blog_post_category" VALUES (8,5,3);
 INSERT INTO "blog_post_category" VALUES (9,5,4);
+INSERT INTO "blog_post_category" VALUES (10,6,1);
 CREATE UNIQUE INDEX IF NOT EXISTS "auth_group_permissions_group_id_permission_id_0cd325b0_uniq" ON "auth_group_permissions" (
 	"group_id",
 	"permission_id"

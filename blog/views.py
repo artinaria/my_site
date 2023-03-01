@@ -2,7 +2,7 @@ from django.shortcuts import render,get_object_or_404
 from blog.models import Post
 from django.utils import timezone
 from django.db.models import Max, Min
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 
 
 
@@ -13,9 +13,14 @@ def blog_view(request,**kwargs):
     if kwargs.get('author_username')!= None:
         posts=posts.filter(author__username=kwargs['author_username'])  
 
-    posts=Paginator(posts,2)   
-    page_number=request.GET.get('page')  
-    posts=posts.get_page('page_number')
+    posts=Paginator(posts,2)  
+    try: 
+        page_number=request.GET.get('page')  
+        posts=posts.get_page(page_number)
+    except PageNotAnInteger:
+        posts=posts.get_page(1)
+    except EmptyPage:
+        posts=posts.get_page(1)   
 
 
 
