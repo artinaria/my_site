@@ -8,7 +8,7 @@ from accounts.forms import EmailOrUsernameAuthenticationForm
 
 class CustomLoginView(LoginView):
     form_class = EmailOrUsernameAuthenticationForm
-    
+    template_name = 'accounts/login.html'
 
 def login_view(request):
     # if request.user.is_authenticated:
