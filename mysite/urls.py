@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from website.sitemaps import StaticViewSitemap
 from blog.sitemaps import BlogSitemap
+from coming_soon.views import coming_soon
 
 
 
@@ -36,8 +37,9 @@ sitemaps = {
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', coming_soon, name='coming_soon'),
 
-    path('',include('website.urls')),
+    #path('',include('website.urls')),
     path('blog/',include('blog.urls')),
     path('accounts/',include('accounts.urls')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},

@@ -2,9 +2,11 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 from django.contrib.auth.decorators import login_required
-
 from django.contrib.auth.views import LoginView
 from accounts.forms import EmailOrUsernameAuthenticationForm
+from django.contrib.auth.views import PasswordResetView,PasswordResetView, PasswordResetDoneView
+from django.urls import reverse_lazy
+
 
 class CustomLoginView(LoginView):
     form_class = EmailOrUsernameAuthenticationForm
@@ -51,6 +53,16 @@ def signup_view(request):
         return render(request,'accounts/signup.html',context)
     else:
         return redirect('/')
+    
+from django.contrib.auth.views import PasswordResetView
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'accounts/password_reset_form.html'
+    email_template_name = 'accounts/password_reset_email.html'
+    success_url = reverse_lazy('password_reset_done')
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'accounts/password_reset_done.html'    
 
 
 
