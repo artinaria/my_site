@@ -22,6 +22,13 @@ from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from website.sitemaps import StaticViewSitemap
 from blog.sitemaps import BlogSitemap
+from coming_soon.views import coming_soon
+from django.urls import re_path
+from django.shortcuts import redirect
+from django.views.generic.base import RedirectView
+
+
+
 
 
 
@@ -35,7 +42,12 @@ sitemaps = {
 
 
 urlpatterns = [
+    path('coming_soon/', coming_soon, name='coming_soon'),
+    re_path(r'^.*$', lambda request: redirect('coming_soon')),
+   
+    
     path('admin/', admin.site.urls),
+    #path('', coming_soon, name='coming_soon'),
 
     path('',include('website.urls')),
     path('blog/',include('blog.urls')),
@@ -46,10 +58,10 @@ urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),   
     path('summernote/', include('django_summernote.urls')),
     path('captcha/', include('captcha.urls')),
-
-
-
-]
+    
+   
+   
+    ]
 urlpatterns+= static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns+= static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

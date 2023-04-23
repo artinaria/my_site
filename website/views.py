@@ -3,6 +3,8 @@ from django.http import HttpResponse,HttpResponseRedirect
 from website.models import Newsletter,Contact
 from website.forms import NewsletterForm,ContactForm
 from django.contrib import messages
+from django.shortcuts import render
+
 
 def index_view(request):
     return render(request,'website/index.html')
